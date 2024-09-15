@@ -1,0 +1,27 @@
+@startuml ER
+
+entity "Users" as users {
+  *id : SERIAL <<PK>>
+  --
+  username : VARCHAR(50) <<UNIQUE>>
+  email : VARCHAR(100) <<UNIQUE>>
+  password_hash : VARCHAR(255)
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+entity "Tasks" as tasks {
+  *id : SERIAL <<PK>>
+  --
+  user_id : INTEGER <<FK>>
+  title : VARCHAR(255)
+  description : TEXT
+  status : ENUM('pending', 'in_progress', 'completed')
+  due_date : DATE
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+users ||--o{ tasks : "has"
+
+@enduml
