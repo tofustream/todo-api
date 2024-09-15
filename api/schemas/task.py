@@ -70,8 +70,8 @@ class Task(TaskBase):
         created_at (datetime): タスクが作成された日時。
         updated_at (datetime): タスクが更新された日時。
 
-    Note:
-        `orm_mode` が True に設定されているため、SQLAlchemyなどのORMモデルからこのスキーマへの自動変換が可能。
+    Config:
+        from_attributes (bool): ORMモデルからの自動変換を有効にする設定。
     """
 
     id: int
@@ -80,4 +80,4 @@ class Task(TaskBase):
     updated_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
