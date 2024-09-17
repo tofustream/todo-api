@@ -1,8 +1,17 @@
-from sqlalchemy import TIMESTAMP, Column, Date, Enum, ForeignKey, Integer, String
+from sqlalchemy import (
+    TIMESTAMP,
+    Column,
+    Date,
+    Enum,
+    ForeignKey,
+    Integer,
+    String,
+)
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 from api.db import Base
+from api.models.user import User  # noqa: F401 動作に必要
 
 
 class Task(Base):
@@ -18,6 +27,8 @@ class Task(Base):
     )
     due_date = Column(Date, nullable=True)
     created_at = Column(TIMESTAMP, server_default=func.now())
-    updated_at = Column(TIMESTAMP, server_default=func.now(), onupdate=func.now())
+    updated_at = Column(
+        TIMESTAMP, server_default=func.now(), onupdate=func.now()
+    )
 
     user = relationship("User", back_populates="tasks")
