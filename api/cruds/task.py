@@ -5,6 +5,16 @@ import api.models.task as task_model
 import api.schemas.task as task_schema
 
 
+async def create_task(
+    db: AsyncSession, task_create: task_schema.TaskCreate
+) -> task_model.Task:
+    task = task_model.Task(**task_create.model_dump())
+    db.add(task)
+    await db.commit()
+    await db.refresh(task)
+    return task
+
+
 async def get_tasks(db: AsyncSession):
     result = await db.execute(select(task_model.Task))
     tasks = result.scalars().all()
@@ -29,9 +39,9 @@ async def update_task(
     if task is None:
         return None
 
-    for var, value in vars(task_update).items():
-        if value is not None:
-            setattr(task, var, value)
+    task_data = task_update.model_dump(exclude_unset=True)
+    for key, value in task_data.items():
+        setattr(task, key, value)
 
     await db.commit()
     await db.refresh(task)
